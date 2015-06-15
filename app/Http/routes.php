@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('usuario', 'UsuarioController@index');
+Route::post('save','UsuarioController@store');
