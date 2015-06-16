@@ -94,7 +94,7 @@
             </div>
             <div id="register" class="animate form">
                 <section class="login_content">
-                    <form method="POST" action="save">
+                    <form method="POST" action="" id="form_cadastro">
 
                         <h1>Create Account</h1>
                         <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />          
@@ -136,6 +136,49 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/sweetalert.min.js"></script>
+
+    <script>
+      $("#form_cadastro").on('submit',function(e){
+        e.preventDefault(); 
+        swal(
+            {
+                title: "Are you sure?",
+                text: "This action cannot be undone",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#009900",
+                confirmButtonText: "Yes, I'm sure!",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+            function(isConfirmed){
+                if(isConfirmed){
+                      $.ajax({
+                          headers: {
+                                'X-CSRF-Token': $('input[name="_token"]').val()
+                          },
+                          url:'save', //===PHP file name====
+                          data:$("#form_cadastro").serialize(),
+                          type:'POST',
+                          success:function(data){
+                            
+                            //Success Message == 'Title', 'Message body', Last one leave as it is
+                            swal("¡Success!", "Message sent!", "success");
+
+                          },
+                          error:function(data){
+                            //Error Message == 'Title', 'Message body', Last one leave as it is
+                            swal("Oops...", "Something went wrong :(", "error");
+                          }
+                        });
+                }
+            }
+        );
+        
+      });
+     
+    </script>
 </body>
 
 </html>
